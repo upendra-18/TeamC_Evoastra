@@ -1,0 +1,53 @@
+name: MLOps Pipeline
+
+on:
+  push:
+    branches: [ main ]
+
+  schedule:
+    - cron: '0 0 * * 0'   # weekly retrain
+
+jobs:
+  train-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v3
+
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Install dependencies
+      run: pip install -r requirements.txt
+
+    # -------------------------
+    # 🔥 TRAIN MODEL
+    # -------------------------
+    - name: Train model
+      run: python train.py
+
+    # -------------------------
+    # 🔥 TEST MODEL
+    # -------------------------
+    - name: Test inference
+      run: python predict.py
+
+    # -------------------------
+    # 🔥 SAVE UPDATED MODEL
+    # -------------------------
+    - name: Commit updated model
+      run: |
+        git config --global user.name "github-actions"
+        git config --global user.email "actions@github.com"
+        git add artifacts/
+        git commit -m "Auto-update model" || echo "No changes"
+        git push
+
+    # -------------------------
+    # 🚀 DEPLOY (auto by platform)
+    # -------------------------
+    - name: Trigger deploy
+      run: echo "Railway/Render auto deploy"
