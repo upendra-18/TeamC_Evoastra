@@ -106,11 +106,7 @@ Negative → decreases prediction
 
 ---
 
-## ⚙️ CI/CD Pipeline
 
-![CI/CD Pipeline](assets/ci_cd.png)
-
----
 
 ## 🎯 Final System Capabilities
 
