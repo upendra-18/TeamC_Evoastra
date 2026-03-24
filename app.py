@@ -11,7 +11,7 @@ app = FastAPI()
 model = joblib.load("artifacts/model.pkl")
 columns = joblib.load("artifacts/columns.pkl")
 
-# 🔥 get components for SHAP (no change to your pipeline)
+# 🔥 get components for  SHAP (no change to your pipeline)
 preprocessor = model.named_steps["preprocessor"]
 xgb_model = model.named_steps["model"]
 
